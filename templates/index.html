@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMap Brasil</title>
+    <!-- Google Fonts & Leaflet CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        :root {
+            /* Tema Claro */
+            --bg-body: #f4f7f6;
+            --bg-card: #ffffff;
+            --bg-ponto-card: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --header-bg: linear-gradient(135deg, #1b5e20, #2e7d32);
+            --header-text: #ffffff;
+            --map-filter: none;
+        }
+
+        [data-theme="dark"] {
+            /* Tema Escuro */
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-ponto-card: #334155;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --header-bg: linear-gradient(135deg, #052e16, #14532d);
+            --header-text: #f8fafc;
+            --map-filter: brightness(0.75) invert(1) contrast(1.2) hue-rotate(200deg);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header compacto para o mapa subir */
+        .header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 16px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 0.82rem;
+            opacity: 0.85;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            max-width: 600px;
+            justify-content: flex-end;
+        }
+
+        /* Busca Compacta */
+        .busca-box {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            max-width: 450px;
+        }
+
+        .busca-box input {
+            width: 100%;
+            padding: 10px 18px;
+            border: 2px solid transparent;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            outline: none;
+            color: #1e293b;
+        }
+
+        .busca-box button {
+            padding: 10px 22px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .busca-box button:hover {
+            background-color: #059669;
+        }
+
+        .toggle-theme-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        /* Layout Principal Elevado */
+        .main-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 16px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .map-card {
+            flex: 2;
+            min-width: 320px;
+            height: 580px;
+            background: var(--bg-card);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        #mapa {
+            width: 100%;
+            height: 100%;
+        }
+
+        .leaflet-tile-container img {
+            filter: var(--map-filter);
+        }
+
+        .painel-lista {
+            flex: 1;
+            min-width: 310px;
+            max-height: 580px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .painel-lista h2 {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lista-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .card-ponto {
+            background: var(--bg-ponto-card);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid #10b981;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card-ponto:hover {
+            border-color: #10b981;
+            transform: scale(1.01);
+        }
+
+        .card-header-flex {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .numero-badge {
+            background: #10b981;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .card-ponto h3 {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .distancia-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.72rem;
+            margin-bottom: 8px;
+        }
+
+        [data-theme="dark"] .distancia-badge {
+            background: #075985;
+            color: #e0f2fe;
+        }
+
+        .cidade-texto {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .tag {
+            background: #14532d;
+            color: #86efac;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 15px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state div {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title-box">
+                <h1>🌱 EcoMap Brasil</h1>
+                <p>Descarte sustentável próximo de você</p>
+            </div>
+            
+            <div class="header-actions">
+                <div class="busca-box">
+                    <input type="text" id="inputEndereco" placeholder="Cidade ou bairro..." onkeypress="tratarEnter(event)">
+                    <button onclick="buscarPontos()">Buscar</button>
+                </div>
+                <button class="toggle-theme-btn" onclick="alternarTema()">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Escuro</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Mapa -->
+        <div class="map-card">
+            <div id="mapa"></div>
+        </div>
+
+        <!-- Lista Lateral -->
+        <aside class="painel-lista">
+            <h2>Ecopontos Próximos</h2>
+            <div id="listaPontos" class="lista-scroll">
+                <div class="empty-state">
+                    <div>🔍</div>
+                    <p>Digite um local para visualizar as opções próximas.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const mapa = L.map('mapa').setView([-14.2350, -51.9253], 4);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(mapa);
+
+        let marcadores = [];
+
+        function alternarTema() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            const newTheme = isDark ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            document.getElementById('themeIcon').innerText = newTheme === 'dark' ? '☀️' : '🌙';
+            document.getElementById('themeText').innerText = newTheme === 'dark' ? 'Claro' : 'Escuro';
+        }
+
+        function tratarEnter(e) {
+            if (e.key === 'Enter') buscarPontos();
+        }
+
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        }
+
+        async function buscarPontos() {
+            const input = document.getElementById('inputEndereco');
+            const endereco = input.value.trim();
+            if (!endereco) return alert("Por favor, digite um endereço!");
+
+            marcadores.forEach(m => mapa.removeLayer(m));
+            marcadores = [];
+
+            const divLista = document.getElementById('listaPontos');
+            divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Carregando ecopontos...</p></div>`;
+
+            try {
+                const res = await fetch(`/buscar?endereco=${encodeURIComponent(endereco)}`);
+                const dados = await res.json();
+
+                if (dados.erro) {
+                    divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>${dados.erro}</p></div>`;
+                    return;
+                }
+
+                mapa.setView([dados.lat_usuario, dados.lng_usuario], 12);
+
+                const userMarker = L.marker([dados.lat_usuario, dados.lng_usuario]).addTo(mapa)
+                    .bindPopup("<b>📍 Ponto de Origem</b>").openPopup();
+                marcadores.push(userMarker);
+
+                divLista.innerHTML = "";
+
+                if (!dados.pontos || dados.pontos.length === 0) {
+                    divLista.innerHTML = `<div class="empty-state"><div>📦</div><p>Nenhum ponto registrado nessa área.</p></div>`;
+                    return;
+                }
+
+                dados.pontos.forEach(ponto => {
+                    ponto.distancia = calcularDistancia(dados.lat_usuario, dados.lng_usuario, ponto.lat, ponto.lng);
+                });
+                dados.pontos.sort((a, b) => a.distancia - b.distancia);
+
+                dados.pontos.forEach((ponto, index) => {
+                    const numero = index + 1;
+                    const distFormatada = ponto.distancia < 1 
+                        ? `${Math.round(ponto.distancia * 1000)}m` 
+                        : `${ponto.distancia.toFixed(1)} km`;
+
+                    const tagsHtml = ponto.materiais.map(m => `<span class="tag">♻️ ${m}</span>`).join('');
+
+                    // Marcador com Tooltip (Nome visível no mapa ao passar o mouse ou clicar)
+                    const m = L.marker([ponto.lat, ponto.lng]).addTo(mapa);
+                    
+                    m.bindTooltip(`<b>#${numero} ${ponto.nome}</b>`, {
+                        permanent: false,
+                        direction: 'top'
+                    });
+
+                    m.bindPopup(`
+                        <div style="font-family: 'Inter', sans-serif;">
+                            <b style="color: #10b981;">#${numero} - ${ponto.nome}</b><br>
+                            <small>📏 a ${distFormatada} de você</small><br><br>
+                            <b>Materiais:</b><br>${tagsHtml}
+                        </div>
+                    `);
+
+                    marcadores.push(m);
+
+                    // Card da lista lateral com o número de identificação
+                    const card = document.createElement('div');
+                    card.className = 'card-ponto';
+                    card.innerHTML = `
+                        <div class="card-header-flex">
+                            <span class="numero-badge">${numero}</span>
+                            <h3>${ponto.nome}</h3>
+                        </div>
+                        <div class="distancia-badge">📏 a ${distFormatada} de você</div>
+                        <div class="cidade-texto">${ponto.cidade}</div>
+                        <div class="tags-container">${tagsHtml}</div>
+                    `;
+
+                    // Clique no card centraliza o mapa no pino correspondente!
+                    card.onclick = () => {
+                        mapa.setView([ponto.lat, ponto.lng], 15);
+                        m.openPopup();
+                    };
+
+                    divLista.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error(err);
+                divLista.innerHTML = `<div class="empty-state"><div>❌</div><p>Erro de conexão com o servidor.</p></div>`;
+            }
+        }
+    </script>
+</body>
+</html>
