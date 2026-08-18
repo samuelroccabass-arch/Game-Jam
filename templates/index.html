@@ -6,40 +6,48 @@
     <title>EcoMap Brasil</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
         :root {
-            --bg-body: #f4f7f6;
+            --bg-body: #f8fafc;
             --bg-card: #ffffff;
-            --bg-ponto-card: #f8fafc;
+            --bg-ponto-card: #ffffff;
             --border-color: #e2e8f0;
-            --text-primary: #1e293b;
+            --text-primary: #0f172a;
             --text-secondary: #64748b;
-            --header-bg: linear-gradient(135deg, #1b5e20, #2e7d32);
+            --header-bg: #15803d;
             --header-text: #ffffff;
+            --btn-primary: #16a34a;
+            --btn-primary-hover: #15803d;
+            --btn-gps: #0284c7;
+            --btn-gps-hover: #0369a1;
             --map-filter: none;
         }
 
         [data-theme="dark"] {
             --bg-body: #0f172a;
             --bg-card: #1e293b;
-            --bg-ponto-card: #334155;
+            --bg-ponto-card: #0f172a;
             --border-color: #334155;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --header-bg: linear-gradient(135deg, #052e16, #14532d);
+            --header-bg: #14532d;
             --header-text: #f8fafc;
-            --map-filter: brightness(0.75) invert(1) contrast(1.2) hue-rotate(200deg);
+            --btn-primary: #22c55e;
+            --btn-primary-hover: #16a34a;
+            --btn-gps: #38bdf8;
+            --btn-gps-hover: #0284c7;
+            --map-filter: brightness(0.85) invert(0.8) contrast(1.1) hue-rotate(180deg);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
         }
 
         body {
@@ -50,15 +58,16 @@
             flex-direction: column;
         }
 
+        /* Header limpo e corporativo */
         .header {
             background: var(--header-bg);
             color: var(--header-text);
-            padding: 16px 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 12px 24px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .header-content {
-            max-width: 1280px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -74,19 +83,21 @@
         }
 
         .header h1 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
         .header p {
-            font-size: 0.82rem;
-            opacity: 0.85;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-weight: 400;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             max-width: 650px;
             justify-content: flex-end;
@@ -95,163 +106,178 @@
 
         .busca-box {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
-            max-width: 450px;
+            max-width: 420px;
         }
 
         .busca-box input {
             width: 100%;
-            padding: 10px 18px;
-            border: 2px solid transparent;
-            border-radius: 40px;
-            font-size: 0.95rem;
+            padding: 8px 14px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 0.88rem;
             outline: none;
-            color: #1e293b;
+            color: #0f172a;
+            background: #ffffff;
+        }
+
+        .busca-box input:focus {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
         }
 
         .btn-acao {
-            padding: 10px 18px;
-            background-color: #10b981;
+            padding: 8px 16px;
+            background-color: var(--btn-primary);
             color: white;
             border: none;
-            border-radius: 40px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
         }
 
-        .btn-acao:hover { background-color: #059669; }
+        .btn-acao:hover { background-color: var(--btn-primary-hover); }
 
         .btn-gps {
-            background-color: #0284c7;
+            background-color: var(--btn-gps);
         }
-        .btn-gps:hover { background-color: #0369a1; }
+        .btn-gps:hover { background-color: var(--btn-gps-hover); }
 
         .toggle-theme-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: white;
-            padding: 8px 14px;
-            border-radius: 30px;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
+        .toggle-theme-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Container Principal */
         .main-container {
-            max-width: 1280px;
+            max-width: 1400px;
             width: 100%;
-            margin: 16px auto;
-            padding: 0 20px;
+            margin: 20px auto;
+            padding: 0 24px;
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             flex: 1;
         }
 
+        /* Card do Mapa */
         .map-card {
             flex: 2;
             min-width: 320px;
-            height: 580px;
+            height: calc(100vh - 120px);
+            min-height: 500px;
             background: var(--bg-card);
-            border-radius: 14px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             border: 1px solid var(--border-color);
         }
 
         #mapa { width: 100%; height: 100%; }
         .leaflet-tile-container img { filter: var(--map-filter); }
 
+        /* Painel Lateral da Lista */
         .painel-lista {
             flex: 1;
-            min-width: 310px;
-            max-height: 580px;
+            min-width: 320px;
+            height: calc(100vh - 120px);
+            min-height: 500px;
             display: flex;
             flex-direction: column;
             background: var(--bg-card);
-            border-radius: 14px;
-            padding: 18px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 20px;
             border: 1px solid var(--border-color);
         }
 
         .painel-header {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .painel-lista h2 {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            font-weight: 700;
         }
 
         .filtros-container {
             display: flex;
             gap: 6px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
+            scrollbar-width: none;
         }
 
+        .filtros-container::-webkit-scrollbar { display: none; }
+
         .btn-filtro {
-            background: var(--bg-ponto-card);
+            background: var(--bg-body);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
             cursor: pointer;
             white-space: nowrap;
             font-weight: 500;
         }
 
         .btn-filtro.ativo {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
+            background: var(--text-primary);
+            color: var(--bg-card);
+            border-color: var(--text-primary);
         }
 
         .lista-scroll {
             flex: 1;
             overflow-y: auto;
-            padding-right: 4px;
+            padding-right: 2px;
         }
 
+        /* Cards da lista */
         .card-ponto {
             background: var(--bg-ponto-card);
             border: 1px solid var(--border-color);
-            border-left: 5px solid #10b981;
             padding: 14px;
             margin-bottom: 10px;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
         }
 
         .card-ponto:hover {
-            border-color: #10b981;
-            transform: scale(1.01);
+            border-color: var(--btn-primary);
         }
 
         .card-header-flex {
             display: flex;
             align-items: flex-start;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 6px;
         }
 
         .numero-badge {
-            background: #10b981;
+            background: var(--header-bg);
             color: white;
             font-weight: 700;
             font-size: 0.75rem;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -260,31 +286,22 @@
         }
 
         .card-ponto h3 {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-primary);
             font-weight: 600;
             line-height: 1.3;
         }
 
         .distancia-badge {
-            display: inline-flex;
-            align-items: center;
-            background: #e0f2fe;
-            color: #0369a1;
+            display: inline-block;
+            color: var(--btn-gps);
             font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.72rem;
-            margin-bottom: 8px;
-        }
-
-        [data-theme="dark"] .distancia-badge {
-            background: #075985;
-            color: #e0f2fe;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
         }
 
         .cidade-texto {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
             margin-bottom: 8px;
         }
@@ -292,43 +309,40 @@
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 4px;
         }
 
         .tag {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 3px 8px;
-            border-radius: 15px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
             font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        [data-theme="dark"] .tag {
-            background: #14532d;
-            color: #86efac;
+            font-weight: 500;
         }
 
         .btn-rota {
             display: inline-block;
             margin-top: 8px;
-            padding: 6px 12px;
-            background: #0284c7;
+            padding: 6px 10px;
+            background: var(--btn-gps);
             color: white;
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
-        .btn-rota:hover { background: #0369a1; }
+        .btn-rota:hover { background: var(--btn-gps-hover); }
 
         .empty-state {
             text-align: center;
-            padding: 40px 15px;
+            padding: 60px 15px;
             color: var(--text-secondary);
         }
 
-        .empty-state div { font-size: 2rem; margin-bottom: 8px; }
+        .empty-state div { font-size: 2rem; margin-bottom: 8px; opacity: 0.7; }
+        .empty-state p { font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -383,14 +397,13 @@
         const mapa = L.map('mapa').setView([-14.2350, -51.9253], 4);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
+            attribution: '© OpenStreetMap contributors'
         }).addTo(mapa);
 
         let marcadores = [];
         let todosPontos = [];
         let materialAtual = 'todos';
 
-        // Mapeia o nome do material para o seu emoji correspondente
         function obterIconeMaterial(material) {
             const m = material.toLowerCase();
             if (m.includes("vidro")) return "🍾";
@@ -400,8 +413,8 @@
             if (m.includes("eletrôn")) return "💻";
             if (m.includes("pilha") || m.includes("bateria")) return "🔋";
             if (m.includes("óleo") || m.includes("oleo")) return "🛢️";
-            if (m.includes("roupa") || m.includes("têxtil") || m.includes("textil")) return "👕";
-            if (m.includes("entulho") || m.includes("gesso")) return "🧱";
+            if (m.includes("roupa") || m.includes("têxtil")) return "👕";
+            if (m.includes("entulho")) return "🧱";
             return "♻️";
         }
 
@@ -439,22 +452,20 @@
 
         function usarGPS() {
             if (!navigator.geolocation) {
-                alert("Geolocalização não é suportada pelo seu navegador.");
+                alert("Geolocalização não suportada.");
                 return;
             }
 
             const divLista = document.getElementById('listaPontos');
-            divLista.innerHTML = `<div class="empty-state"><div>📡</div><p>Obtendo sua localização GPS...</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div>📡</div><p>Obtendo localização GPS...</p></div>`;
 
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
-                    executarBusca(`/buscar_coords?lat=${lat}&lng=${lng}`);
+                    executarBusca(`/buscar_coords?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`);
                 },
-                (err) => {
-                    alert("Não foi possível obter sua localização via GPS.");
-                    divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>Permissão de GPS negada ou indisponível.</p></div>`;
+                () => {
+                    alert("Permissão de GPS negada.");
+                    divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>GPS indisponível.</p></div>`;
                 }
             );
         }
@@ -464,7 +475,7 @@
             marcadores = [];
 
             const divLista = document.getElementById('listaPontos');
-            divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Carregando ecopontos...</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Buscando ecopontos...</p></div>`;
 
             try {
                 const res = await fetch(url);
@@ -530,21 +541,17 @@
                     ? `${Math.round(ponto.distancia * 1000)}m` 
                     : `${ponto.distancia.toFixed(1)} km`;
 
-                // Gera as tags dinamicamente com o ícone correspondente a cada material
                 const tagsHtml = ponto.materiais.map(m => {
-                    const icone = obterIconeMaterial(m);
-                    return `<span class="tag">${icone} ${m}</span>`;
+                    return `<span class="tag">${obterIconeMaterial(m)} ${m}</span>`;
                 }).join('');
 
                 const urlGoogleMaps = `https://www.google.com/maps/dir/?api=1&destination=${ponto.lat},${ponto.lng}`;
 
                 const m = L.marker([ponto.lat, ponto.lng]).addTo(mapa);
                 
-                m.bindTooltip(`<b>#${numero} ${ponto.nome}</b>`, { permanent: false, direction: 'top' });
-
                 m.bindPopup(`
-                    <div style="font-family: 'Inter', sans-serif;">
-                        <b style="color: #10b981;">#${numero} - ${ponto.nome}</b><br>
+                    <div style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                        <b style="color: #15803d;">#${numero} - ${ponto.nome}</b><br>
                         <small>📏 a ${distFormatada} de você</small><br><br>
                         <b>Materiais aceitos:</b><br>${tagsHtml}<br>
                         <a href="${urlGoogleMaps}" target="_blank" class="btn-rota">🗺️ Como Chegar</a>
@@ -560,7 +567,7 @@
                         <span class="numero-badge">${numero}</span>
                         <h3>${ponto.nome}</h3>
                     </div>
-                    <div class="distancia-badge">📏 a ${distFormatada} de você</div>
+                    <div class="distancia-badge">📏 a ${distFormatada}</div>
                     <div class="cidade-texto">${ponto.cidade}</div>
                     <div class="tags-container">${tagsHtml}</div>
                 `;
