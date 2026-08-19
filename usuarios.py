@@ -1,104 +1,77 @@
-import hashlib
 import mysql.connector
-from mysql.connector import Error
- 
-# ==============================================================================
-#  CONFIGURAÇÃO DO BANCO
-# ==============================================================================
+import bcrypt
+
 DB_CONFIG = {
     "host": "127.0.0.1",
     "user": "root",
-    "password": "Senac2026",
-    "database": "EcoPalhoca"
+    "password": "Senac2026",  # Altere para a sua senha do MySQL
+    "database": "EcoMap"
 }
- 
- 
-def get_conexao():
-    """Abre e retorna uma conexão com o banco. Retorna None se falhar."""
-    try:
-        return mysql.connector.connect(**DB_CONFIG)
-    except Error as e:
-        print(f" Erro ao conectar no MySQL: {e}")
-        return None
- 
- 
-def hash_senha(senha):
-    """
-    Gera um hash da senha com SHA-256.
-    Obs: para um projeto mais robusto, o ideal é usar a lib 'bcrypt'
-    (pip install bcrypt), que é mais segura que SHA-256 puro.
-    """
-    return hashlib.sha256(senha.encode("utf-8")).hexdigest()
- 
- 
+
+def obter_conexao():
+    return mysql.connector.connect(**DB_CONFIG)
+
 def cadastrar_usuario(nome, senha):
-    """
-    Insere um novo usuário no banco.
-    Retorna (True, "mensagem de sucesso") ou (False, "mensagem de erro").
-    """
-    conn = get_conexao()
-    if not conn:
-        return False, "Não foi possível conectar ao banco de dados."
- 
+    # Gera o hash seguro da senha
+    senha_bytes = senha.encode('utf-8')
+    salt = bcrypt.gensalt()
+    senha_hash = bcrypt.hashpw(senha_bytes, salt).decode('utf-8')
+
+    conn = obter_conexao()
+    cursor = conn.cursor()
+
     try:
-        cursor = conn.cursor()
-        senha_criptografada = hash_senha(senha)
-        cursor.execute(
-            "INSERT INTO usuarios (nome, senha_hash) VALUES (%s, %s)",
-            (nome, senha_criptografada)
-        )
+        # Verifica se o usuário já existe
+        cursor.execute("SELECT id FROM usuarios WHERE nome = %s", (nome,))
+        if cursor.fetchone():
+            return False, "Nome de usuário já cadastrado."
+
+        # Insere o novo usuário na tabela
+        sql = "INSERT INTO usuarios (nome, senha_hash) VALUES (%s, %s)"
+        cursor.execute(sql, (nome, senha_hash))
         conn.commit()
         return True, "Usuário cadastrado com sucesso!"
-    except Error as e:
-        return False, f"Erro ao cadastrar: {e}"
+
+    except mysql.connector.Error as err:
+        return False, f"Erro no banco de dados: {err}"
     finally:
         cursor.close()
         conn.close()
- 
- 
+
 def autenticar_usuario(nome, senha):
-    """
-    Verifica se o nome e senha batem com um usuário do banco.
-    Retorna (True, dados_do_usuario) ou (False, "mensagem de erro").
-    """
-    conn = get_conexao()
-    if not conn:
-        return False, "Não foi possível conectar ao banco de dados."
- 
+    conn = obter_conexao()
+    cursor = conn.cursor(dictionary=True)
+
     try:
-        cursor = conn.cursor(dictionary=True)
-        senha_criptografada = hash_senha(senha)
-        cursor.execute(
-            "SELECT id, nome FROM usuarios WHERE nome = %s AND senha_hash = %s",
-            (nome, senha_criptografada)
-        )
+        # Busca o usuário pelo nome
+        cursor.execute("SELECT * FROM usuarios WHERE nome = %s", (nome,))
         usuario = cursor.fetchone()
- 
-        if usuario:
-            # Atualiza o último acesso
+
+        if not usuario:
+            return False, "Usuário ou senha incorretos.", None
+
+        # Valida a senha informada com o hash salvo no MySQL
+        senha_bytes = senha.encode('utf-8')
+        hash_salvo = usuario['senha_hash'].encode('utf-8')
+
+        if bcrypt.checkpw(senha_bytes, hash_salvo):
+            # Atualiza a coluna ultimo_acesso no MySQL
             cursor.execute(
-                "UPDATE usuarios SET ultimo_acesso = NOW() WHERE id = %s",
-                (usuario["id"],)
+                "UPDATE usuarios SET ultimo_acesso = NOW() WHERE id = %s", 
+                (usuario['id'],)
             )
             conn.commit()
-            return True, usuario
+
+            dados_usuario = {
+                "id": usuario['id'],
+                "nome": usuario['nome']
+            }
+            return True, "Login realizado com sucesso!", dados_usuario
         else:
-            return False, "Nome ou senha incorretos."
-    finally:
-        cursor.close()
-        conn.close()
- 
- 
-def listar_usuarios():
-    """Retorna todos os usuários cadastrados (sem a senha)."""
-    conn = get_conexao()
-    if not conn:
-        return []
- 
-    try:
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nome, data_cadastro, ultimo_acesso FROM usuarios")
-        return cursor.fetchall()
+            return False, "Usuário ou senha incorretos.", None
+
+    except mysql.connector.Error as err:
+        return False, f"Erro no banco de dados: {err}", None
     finally:
         cursor.close()
         conn.close()
