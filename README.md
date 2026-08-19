@@ -1,48 +1,47 @@
-# Game-Jam
+Game-Jam
 
-# 🌱 EcoMap Brasil
+🌱 EcoMap Brasil
 
 <div align="center">
 
-### ♻️ Encontre pontos de reciclagem perto de você
+♻️ Encontre pontos de reciclagem perto de você
 
-**Uma solução tecnológica para facilitar o descarte correto de resíduos e incentivar a sustentabilidade.**
+Uma solução tecnológica para facilitar o descarte correto de resíduos e incentivar a sustentabilidade.
 
 </div>
 
----
+📌 Sobre o projeto
 
-## 📌 Sobre o projeto
+O EcoMap Brasil é uma aplicação web desenvolvida para facilitar a localização de pontos de reciclagem e ecopontos próximos ao usuário.
 
-O **EcoMap Brasil** é uma aplicação web desenvolvida para facilitar a localização de **pontos de reciclagem e ecopontos** próximos ao usuário.
+O sistema permite que o usuário informe uma cidade, bairro ou endereço ou utilize sua localização atual através do GPS. A partir dessa localização, o sistema busca pontos de reciclagem próximos, apresenta os resultados em um mapa interativo e informa os materiais aceitos em cada local.
 
-O sistema permite que o usuário informe uma **cidade, bairro ou endereço** ou utilize sua **localização atual através do GPS**. A partir dessa localização, o sistema busca pontos de reciclagem próximos, apresenta os resultados em um **mapa interativo** e informa os **materiais aceitos** em cada local.
+O projeto utiliza dados abertos do OpenStreetMap, com geocodificação através do Nominatim e consultas de pontos de reciclagem através da Overpass API. Também possui suporte opcional a um banco de dados MySQL para armazenamento de ecopontos próprios.
 
-O projeto utiliza dados do **OpenStreetMap**, consultas através da **Overpass API** e possui suporte opcional a um banco de dados **MySQL** para armazenamento de ecopontos próprios.
+⚠️ Importante: os resultados dependem da disponibilidade e atualização dos dados dos serviços externos. Se você pesquisar o nome de um lugar e nenhum ecoponto aparecer, tente pesquisar o mesmo lugar novamente. Uma nova consulta pode retornar resultados diferentes dependendo da resposta momentânea dos serviços de mapas.
 
----
-
-## 🎯 Problema
+🎯 Problema
 
 Muitas pessoas possuem materiais recicláveis em casa, mas não sabem onde realizar o descarte correto.
 
 Entre os principais problemas estão:
 
-* Falta de informação sobre pontos de coleta;
-* Dificuldade para encontrar ecopontos próximos;
-* Falta de informação sobre os materiais aceitos;
-* Dificuldade para saber como chegar ao local;
-* Descarte incorreto de materiais recicláveis.
+Falta de informação sobre pontos de coleta;
 
-O **EcoMap Brasil** foi criado para tornar esse processo mais simples, rápido e acessível.
+Dificuldade para encontrar ecopontos próximos;
 
----
+Falta de informação sobre os materiais aceitos;
 
-## 💡 Solução
+Dificuldade para saber como chegar ao local;
+
+Descarte incorreto de materiais recicláveis.
+
+O EcoMap Brasil foi criado para tornar esse processo mais simples, rápido e acessível.
+
+💡 Solução
 
 O EcoMap transforma a localização do usuário em uma busca por pontos de reciclagem.
 
-```text
 👤 USUÁRIO
     │
     ├── 🔎 Digita endereço
@@ -71,62 +70,59 @@ O EcoMap transforma a localização do usuário em uma busca por pontos de recic
        └─────┬─────┘
              ▼
        🚗 COMO CHEGAR
-```
 
----
+🚀 Funcionalidades
 
-# 🚀 Funcionalidades
-
-### 📍 Localização por endereço
+📍 Localização por endereço
 
 O usuário pode pesquisar por:
 
-* Cidade;
-* Bairro;
-* Endereço;
-* Localidade.
+Cidade;
 
-O sistema utiliza o **Nominatim**, serviço de geocodificação do OpenStreetMap, para transformar o endereço em coordenadas geográficas.
+Bairro;
 
----
+Endereço;
 
-### 📡 Localização por GPS
+Localidade.
+
+O sistema utiliza o Nominatim, serviço de geocodificação do OpenStreetMap, para transformar o endereço em coordenadas geográficas.
+
+⚠️ Aviso sobre a pesquisa: caso o local seja encontrado, mas nenhum ecoponto apareça nos resultados, pesquise o mesmo lugar novamente. A busca depende de serviços externos e dos dados disponíveis no momento da consulta.
+
+📡 Localização por GPS
 
 O usuário pode clicar no botão:
 
-```text
 📍 GPS
-```
 
 O navegador solicita permissão para acessar a localização atual.
 
 Após obter a latitude e longitude, o sistema procura os ecopontos próximos.
 
----
+🗺️ Mapa interativo
 
-### 🗺️ Mapa interativo
-
-Os resultados são apresentados em um mapa utilizando **Leaflet.js**.
+Os resultados são apresentados em um mapa utilizando Leaflet.js.
 
 O mapa apresenta:
 
-* 📍 Localização do usuário;
-* ♻️ Ecopontos;
-* 📏 Distância;
-* ℹ️ Informações dos pontos;
-* 🗺️ Opção para obter uma rota.
+📍 Localização do usuário;
 
----
+♻️ Ecopontos;
 
-### 📏 Distância
+📏 Distância;
 
-O sistema calcula a distância entre o usuário e cada ecoponto utilizando a **fórmula de Haversine**.
+ℹ️ Informações dos pontos;
+
+🗺️ Opção para obter uma rota.
+
+📏 Distância
+
+O sistema calcula a distância entre o usuário e cada ecoponto utilizando a fórmula de Haversine.
 
 Os pontos são organizados do mais próximo para o mais distante.
 
 Exemplo:
 
-```text
 🥇 Ecoponto Central
 📏 350 metros
 
@@ -135,105 +131,129 @@ Exemplo:
 
 🥉 Ecoponto Sul
 📏 2.8 km
-```
 
----
-
-### ♻️ Materiais aceitos
+♻️ Materiais aceitos
 
 O sistema identifica os materiais disponíveis em cada ecoponto.
 
-| Material           | Emoji |
-| ------------------ | ----- |
-| Plástico           | 🥤    |
-| Vidro              | 🍾    |
-| Papel              | 📦    |
-| Metal              | 🥫    |
-| Roupas             | 👕    |
-| Pilhas/Baterias    | 🔋    |
-| Eletrônicos        | 💻    |
-| Óleo               | 🛢️   |
-| Entulho            | 🧱    |
-| Recicláveis gerais | ♻️    |
+Material
 
----
+Emoji
 
-### 🔎 Filtros
+Plástico
+
+🥤
+
+Vidro
+
+🍾
+
+Papel
+
+📦
+
+Metal
+
+🥫
+
+Roupas
+
+👕
+
+Pilhas/Baterias
+
+🔋
+
+Eletrônicos
+
+💻
+
+Óleo
+
+🛢️
+
+Entulho
+
+🧱
+
+Recicláveis gerais
+
+♻️
+
+🔎 Filtros
 
 O usuário pode filtrar os resultados por tipo de material.
 
-```text
 Todos
 🥤 Plástico
 🍾 Vidro
 📦 Papel
 🥫 Metal
-```
 
----
-
-### 🗺️ Como chegar
+🗺️ Como chegar
 
 Cada ecoponto possui um botão que abre uma rota utilizando o Google Maps.
 
-```text
 🗺️ Como Chegar
-```
 
----
-
-### 🌙 Modo escuro
+🌙 Modo escuro
 
 A aplicação possui suporte para:
 
-* ☀️ Tema claro;
-* 🌙 Tema escuro.
+☀️ Tema claro;
 
----
+🌙 Tema escuro.
 
-### 📱 Interface responsiva
+📱 Interface responsiva
 
 A interface foi desenvolvida para funcionar em:
 
-* 💻 Computadores;
-* 📱 Celulares;
-* 📲 Tablets.
+💻 Computadores;
 
----
+📱 Celulares;
 
-# 🛠️ Tecnologias utilizadas
+📲 Tablets.
 
-## Backend
+🛠️ Tecnologias utilizadas
 
-* 🐍 Python
-* 🌐 Flask
-* 📡 Requests
-* 🗄️ MySQL Connector
-* 📐 Math
+Backend
 
-## Frontend
+🐍 Python
 
-* HTML5
-* CSS3
-* JavaScript
-* Leaflet.js
+🌐 Flask
 
-## APIs e serviços
+📡 Requests
 
-* OpenStreetMap
-* Nominatim
-* Overpass API
-* Google Maps
+🗄️ MySQL Connector
 
-## Banco de dados
+📐 Math
 
-* MySQL
+Frontend
 
----
+HTML5
 
-# 📁 Estrutura do projeto
+CSS3
 
-```text
+JavaScript
+
+Leaflet.js
+
+APIs e serviços
+
+OpenStreetMap
+
+Nominatim
+
+Overpass API
+
+Google Maps
+
+Banco de dados
+
+MySQL
+
+📁 Estrutura do projeto
+
 EcoMap-Brasil/
 │
 ├── app.py
@@ -253,185 +273,127 @@ EcoMap-Brasil/
 ├── README.md
 │
 └── LICENSE
-```
 
-> No código atual, o HTML, CSS e JavaScript podem estar juntos no `index.html`. A separação em arquivos `static` é recomendada para organização futura.
+No código atual, o HTML, CSS e JavaScript podem estar juntos no index.html. A separação em arquivos static é recomendada para organização futura.
 
----
+⚙️ Instalação
 
-# ⚙️ Instalação
-
-## 📋 Pré-requisitos
+📋 Pré-requisitos
 
 Antes de iniciar, certifique-se de possuir:
 
-* Python 3 instalado;
-* pip instalado;
-* MySQL instalado, caso queira utilizar o banco de dados;
-* Git instalado;
-* Um navegador moderno.
+Python 3 instalado;
 
----
+pip instalado;
 
-# 🐍 1. Verificar o Python
+MySQL instalado, caso queira utilizar o banco de dados;
+
+Git instalado;
+
+Um navegador moderno.
+
+🐍 1. Verificar o Python
 
 Verifique se o Python está instalado:
 
-```bash
 python --version
-```
 
 ou:
 
-```bash
 python3 --version
-```
 
----
+📦 2. Clonar o projeto
 
-# 📦 2. Clonar o projeto
-
-```bash
 git clone https://github.com/SEU-USUARIO/EcoMap-Brasil.git
-```
 
 Entre na pasta:
 
-```bash
 cd EcoMap-Brasil
-```
 
----
-
-# 🔧 3. Criar ambiente virtual
+🔧 3. Criar ambiente virtual
 
 O ambiente virtual é recomendado para manter as dependências do projeto separadas do restante do sistema.
 
-### Windows
+Windows
 
-```bash
 python -m venv venv
-```
 
 Ative o ambiente:
 
-```bash
 venv\Scripts\activate
-```
 
-### Linux / macOS
+Linux / macOS
 
-```bash
 python3 -m venv venv
-```
 
 Ative:
 
-```bash
 source venv/bin/activate
-```
 
----
+📚 4. Instalar Flask
 
-# 📚 4. Instalar Flask
-
-```bash
 pip install flask
-```
 
-O **Flask** é utilizado para criar o servidor e as rotas do backend.
+O Flask é utilizado para criar o servidor e as rotas do backend.
 
----
+📡 5. Instalar Requests
 
-# 📡 5. Instalar Requests
-
-```bash
 pip install requests
-```
 
-O **Requests** é utilizado para realizar as requisições às APIs externas.
+O Requests é utilizado para realizar as requisições às APIs externas.
 
----
+🗄️ 6. Instalar MySQL Connector
 
-# 🗄️ 6. Instalar MySQL Connector
-
-```bash
 pip install mysql-connector-python
-```
 
-O **MySQL Connector** permite que o Python se conecte ao banco de dados MySQL.
+O MySQL Connector permite que o Python se conecte ao banco de dados MySQL.
 
----
-
-# 📦 7. Instalar todas as dependências de uma vez
+📦 7. Instalar todas as dependências de uma vez
 
 Também é possível instalar todas as bibliotecas com apenas um comando:
 
-```bash
 pip install flask requests mysql-connector-python
-```
 
----
+📄 8. requirements.txt
 
-# 📄 8. requirements.txt
-
-O projeto pode utilizar um arquivo `requirements.txt` para facilitar a instalação.
+O projeto pode utilizar um arquivo requirements.txt para facilitar a instalação.
 
 Crie o arquivo:
 
-```text
 requirements.txt
-```
 
 Adicione:
 
-```text
 Flask
 requests
 mysql-connector-python
-```
 
 Depois execute:
 
-```bash
 pip install -r requirements.txt
-```
 
----
+🗄️ Configuração do MySQL
 
-# 🗄️ Configuração do MySQL
-
-O MySQL é **opcional**.
+O MySQL é opcional.
 
 O sistema consegue buscar pontos diretamente através do OpenStreetMap/Overpass, mas o MySQL permite utilizar uma base própria de ecopontos.
 
----
-
-## 1. Criar o banco
+1. Criar o banco
 
 Entre no MySQL:
 
-```bash
 mysql -u root -p
-```
 
 Crie o banco:
 
-```sql
 CREATE DATABASE ecomap;
-```
 
 Selecione o banco:
 
-```sql
 USE ecomap;
-```
 
----
+2. Criar a tabela
 
-## 2. Criar a tabela
-
-```sql
 CREATE TABLE ecopontos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -440,13 +402,9 @@ CREATE TABLE ecopontos (
     longitude DECIMAL(10, 7) NOT NULL,
     materiais TEXT
 );
-```
 
----
+3. Adicionar um exemplo
 
-## 3. Adicionar um exemplo
-
-```sql
 INSERT INTO ecopontos
 (nome, cidade, latitude, longitude, materiais)
 VALUES
@@ -457,113 +415,87 @@ VALUES
     -49.2733,
     'Plástico,Vidro,Papel,Metal'
 );
-```
 
----
+🔐 Configurar o banco no Python
 
-# 🔐 Configurar o banco no Python
+No arquivo app.py, configure:
 
-No arquivo `app.py`, configure:
-
-```python
 DB_CONFIG = {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "user": "root",
-    "password": "sua_senha",
-    "database": "ecomap"
+    "password": "SUA_SENHA",
+    "database": "EcoMap"
 }
-```
 
 Altere:
 
-```text
 sua_senha
-```
 
 para a senha do seu MySQL.
 
-### Exemplo
+Exemplo
 
-```python
 DB_CONFIG = {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "user": "root",
     "password": "123456",
-    "database": "ecomap"
+    "database": "EcoMap"
 }
-```
 
-> ⚠️ Em ambientes de produção, não coloque senhas diretamente no código. Utilize variáveis de ambiente.
+⚠️ Em ambientes de produção, não coloque senhas diretamente no código. Utilize variáveis de ambiente.
 
----
-
-# ▶️ Executando o projeto
+▶️ Executando o projeto
 
 Depois de instalar as dependências, execute:
 
-```bash
 python app.py
-```
 
 No Linux/macOS:
 
-```bash
 python3 app.py
-```
 
 O servidor será iniciado.
 
 Acesse:
 
-```text
 http://127.0.0.1:5000
-```
 
 ou:
 
-```text
 http://localhost:5000
-```
 
----
+🔌 Endpoints
 
-# 🔌 Endpoints
+O backend possui uma rota principal de busca.
 
-O backend possui dois endpoints principais.
+🔎 Buscar por endereço
 
-## 🔎 Buscar por endereço
-
-```http
 GET /buscar?endereco=Curitiba
-```
 
 Exemplo:
 
-```text
 http://localhost:5000/buscar?endereco=Curitiba
-```
 
----
+O endereço é convertido em coordenadas pelo Nominatim antes da busca dos ecopontos.
 
-## 📍 Buscar por coordenadas
+📍 Buscar por coordenadas / GPS
 
-```http
-GET /buscar_coords?lat=-25.4284&lng=-49.2733
-```
+A mesma rota /buscar também aceita latitude e longitude:
+
+GET /buscar?lat=-25.4284&lng=-49.2733
 
 Exemplo:
 
-```text
-http://localhost:5000/buscar_coords?lat=-25.4284&lng=-49.2733
-```
+http://localhost:5000/buscar?lat=-25.4284&lng=-49.2733
 
----
+Quando lat e lng são enviados, o sistema utiliza diretamente essas coordenadas.
 
-# 🔄 Funcionamento da busca
+Observação: não existe uma rota /buscar_coords no app.py atual.
+
+🔄 Funcionamento da busca
 
 Quando o usuário realiza uma pesquisa:
 
-```text
 1. 👤 Usuário informa localização
              ↓
 2. 🌐 Frontend envia requisição
@@ -585,116 +517,130 @@ Quando o usuário realiza uma pesquisa:
 10. 🗺️ Resultados aparecem no mapa
              ↓
 11. 📋 Lista de ecopontos é exibida
-```
 
----
+📜 Créditos e atribuições de terceiros
 
-# 🌎 APIs externas
+O EcoMap Brasil utiliza bibliotecas, serviços e dados de terceiros. Eles são utilizados de acordo com suas respectivas licenças, termos de uso e políticas.
 
-## OpenStreetMap
+🌎 OpenStreetMap
 
-O OpenStreetMap fornece os dados geográficos utilizados pelo projeto.
+O OpenStreetMap (OSM) fornece os dados geográficos utilizados pelo projeto.
 
-https://www.openstreetmap.org/
+Site oficial: https://www.openstreetmap.org/
 
----
+📍 Nominatim
 
-## Nominatim
+O Nominatim é utilizado para transformar o endereço informado pelo usuário em coordenadas geográficas.
 
-O Nominatim transforma endereços em coordenadas geográficas.
+Site oficial: https://nominatim.openstreetmap.org/
 
-https://nominatim.openstreetmap.org/
+🔎 Overpass API
 
----
+A Overpass API é utilizada para consultar os pontos de reciclagem registrados no OpenStreetMap.
 
-## Overpass API
+No app.py, a consulta procura locais utilizando:
 
-A Overpass API é utilizada para consultar pontos de reciclagem registrados no OpenStreetMap.
-
-O sistema procura locais utilizando:
-
-```text
 amenity = recycling
-```
 
-A busca é realizada em um raio de aproximadamente:
+A aplicação utiliza o servidor público:
 
-```text
-30 km
-```
+https://overpass-api.de/api/interpreter
 
----
+Site do projeto: https://overpass-api.de/
 
-## Leaflet
+🗺️ Leaflet.js
 
-O mapa interativo é desenvolvido utilizando Leaflet.js.
+O Leaflet.js é utilizado no frontend para a exibição do mapa interativo.
 
-https://leafletjs.com/
+Site oficial: https://leafletjs.com/
 
----
+🐍 Flask
 
-# 📐 Cálculo de distância
+O Flask é utilizado para criar o servidor web e as rotas do backend.
 
-O projeto utiliza a **fórmula de Haversine** para calcular a distância geográfica entre duas coordenadas.
+Site oficial: https://flask.palletsprojects.com/
+
+📡 Requests
+
+A biblioteca Requests é utilizada pelo backend Python para realizar requisições HTTP aos serviços externos.
+
+Site oficial: https://requests.readthedocs.io/
+
+🗄️ MySQL Connector/Python
+
+O MySQL Connector/Python é utilizado para realizar a conexão entre o Python e o banco de dados MySQL.
+
+Site oficial: https://dev.mysql.com/doc/connector-python/en/
+
+🗺️ Google Maps
+
+O Google Maps é utilizado pelo frontend para a funcionalidade de Como Chegar, conforme descrito na aplicação.
+
+Site oficial: https://maps.google.com/
+
+Importante: os serviços, bibliotecas e dados de terceiros não pertencem ao EcoMap Brasil. O projeto apenas utiliza essas tecnologias e serviços para implementar suas funcionalidades.
+
+Dados de terceiros: os pontos encontrados por meio do OpenStreetMap/Overpass são dados disponibilizados por colaboradores da comunidade do OpenStreetMap. O EcoMap Brasil não garante que todos os pontos existentes estejam cadastrados, atualizados ou disponíveis em todas as pesquisas.
+
+📐 Cálculo de distância
+
+O projeto utiliza a fórmula de Haversine para calcular a distância geográfica entre duas coordenadas.
 
 A fórmula considera:
 
-* Latitude;
-* Longitude;
-* Raio aproximado da Terra.
+Latitude;
+
+Longitude;
+
+Raio aproximado da Terra.
 
 O resultado é apresentado em quilômetros ou metros.
 
 Exemplo:
 
-```text
 📏 450m
-```
 
 ou:
 
-```text
 📏 2.3 km
-```
 
----
-
-# 🌱 Sustentabilidade
+🌱 Sustentabilidade
 
 O EcoMap Brasil tem como objetivo facilitar o acesso da população à reciclagem e incentivar o descarte correto de resíduos.
 
 A solução pode contribuir para:
 
-* ♻️ Aumentar a reciclagem;
-* 🗑️ Reduzir o descarte incorreto;
-* 🌎 Reduzir impactos ambientais;
-* 🔄 Incentivar a economia circular;
-* 📚 Facilitar o acesso à informação;
-* 🏙️ Contribuir para cidades mais sustentáveis.
+♻️ Aumentar a reciclagem;
 
----
+🗑️ Reduzir o descarte incorreto;
 
-# 🎯 ODS relacionados
+🌎 Reduzir impactos ambientais;
 
-## ODS 11 — Cidades e Comunidades Sustentáveis
+🔄 Incentivar a economia circular;
+
+📚 Facilitar o acesso à informação;
+
+🏙️ Contribuir para cidades mais sustentáveis.
+
+🎯 ODS relacionados
+
+ODS 11 — Cidades e Comunidades Sustentáveis
 
 O projeto contribui para cidades mais sustentáveis ao facilitar o acesso da população a pontos de descarte e reciclagem.
 
-## ODS 12 — Consumo e Produção Responsáveis
+ODS 12 — Consumo e Produção Responsáveis
 
 É o principal ODS relacionado ao projeto, incentivando o descarte adequado e o reaproveitamento de materiais.
 
-## ODS 13 — Ação Contra a Mudança Global do Clima
+ODS 13 — Ação Contra a Mudança Global do Clima
 
 A reciclagem e a redução do descarte inadequado podem contribuir para diminuir impactos ambientais.
 
----
+🏆 Hackathon
 
-# 🏆 Hackathon
+💭 Nossa ideia
 
-## 💭 Nossa ideia
-
-> **"Se existe um lugar correto para descartar, por que deveria ser difícil encontrá-lo?"**
+"Se existe um lugar correto para descartar, por que deveria ser difícil encontrá-lo?"
 
 O EcoMap Brasil foi desenvolvido para aproximar as pessoas da reciclagem através da tecnologia.
 
@@ -702,7 +648,6 @@ O usuário não precisa procurar manualmente por diferentes pontos de coleta.
 
 Basta informar sua localização.
 
-```text
 📍 Informar localização
         ↓
 ♻️ Encontrar ecopontos
@@ -716,34 +661,42 @@ Basta informar sua localização.
 🚗 Encontrar uma rota
         ↓
 🌱 Reciclar corretamente
-```
 
-### Nossa proposta
+Nossa proposta
 
-**Tecnologia + Geolocalização + Dados Abertos + Sustentabilidade**
+Tecnologia + Geolocalização + Dados Abertos + Sustentabilidade
 
----
+🔮 Futuras melhorias
 
-# 🔮 Futuras melhorias
+👤 Sistema de usuários
 
-* [ ] 👤 Sistema de usuários
-* [ ] ♻️ Cadastro de novos ecopontos
-* [ ] ⭐ Avaliação dos ecopontos
-* [ ] 📸 Fotos dos locais
-* [ ] 🕐 Horários de funcionamento
-* [ ] 📞 Informações de contato
-* [ ] ❤️ Sistema de favoritos
-* [ ] 🏆 Sistema de pontos
-* [ ] 🥇 Ranking de usuários
-* [ ] 📊 Dashboard de impacto ambiental
-* [ ] 🔔 Notificações
-* [ ] 🏢 Integração com cooperativas
-* [ ] 📱 Aplicativo mobile
-* [ ] 🌎 Expansão para outras regiões
+♻️ Cadastro de novos ecopontos
 
----
+⭐ Avaliação dos ecopontos
 
-# 🔐 Privacidade
+📸 Fotos dos locais
+
+🕐 Horários de funcionamento
+
+📞 Informações de contato
+
+❤️ Sistema de favoritos
+
+🏆 Sistema de pontos
+
+🥇 Ranking de usuários
+
+📊 Dashboard de impacto ambiental
+
+🔔 Notificações
+
+🏢 Integração com cooperativas
+
+📱 Aplicativo mobile
+
+🌎 Expansão para outras regiões
+
+🔐 Privacidade
 
 A localização do usuário é utilizada para encontrar pontos de reciclagem próximos.
 
@@ -751,72 +704,54 @@ Quando o usuário utiliza o GPS, o navegador solicita permissão antes de dispon
 
 O projeto não depende do armazenamento permanente da localização do usuário para realizar sua função principal.
 
----
-
-# 🤝 Contribuição
+🤝 Contribuição
 
 Contribuições são bem-vindas!
 
-### 1. Faça um Fork
+1. Faça um Fork
 
-Clique em **Fork** no GitHub.
+Clique em Fork no GitHub.
 
-### 2. Clone o projeto
+2. Clone o projeto
 
-```bash
 git clone https://github.com/SEU-USUARIO/EcoMap-Brasil.git
-```
 
-### 3. Entre na pasta
+3. Entre na pasta
 
-```bash
 cd EcoMap-Brasil
-```
 
-### 4. Crie uma branch
+4. Crie uma branch
 
-```bash
 git checkout -b minha-feature
-```
 
-### 5. Faça suas alterações
+5. Faça suas alterações
 
-### 6. Adicione as alterações
+6. Adicione as alterações
 
-```bash
 git add .
-```
 
-### 7. Faça o commit
+7. Faça o commit
 
-```bash
 git commit -m "Adiciona nova funcionalidade"
-```
 
-### 8. Envie para o GitHub
+8. Envie para o GitHub
 
-```bash
 git push origin minha-feature
-```
 
-Depois abra um **Pull Request**.
+Depois abra um Pull Request.
 
----
-
-# 📄 Licença
+📄 Licença
 
 Este projeto está sob a licença MIT.
 
-Consulte o arquivo [`LICENSE`](LICENSE) para mais informações.
-
----
+Consulte o arquivo LICENSE para mais informações.
 
 <div align="center">
 
-# 🌱 EcoMap Brasil
+🌱 EcoMap Brasil
 
-### Encontre. Recicle. Transforme. ♻️
+Encontre. Recicle. Transforme. ♻️
 
-**Tecnologia a favor da sustentabilidade.**
+Tecnologia a favor da sustentabilidade.
 
 </div>
