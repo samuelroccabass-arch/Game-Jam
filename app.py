@@ -12,7 +12,7 @@ except ImportError:
 app = Flask(__name__)
 
 # ==============================================================================
-# 🗄️ CONFIGURAÇÃO DO BANCO DE DADOS MYSQL
+#  CONFIGURAÇÃO DO BANCO DE DADOS MYSQL
 # ==============================================================================
 DB_CONFIG = {
     "host": "localhost",

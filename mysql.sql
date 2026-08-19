@@ -1,0 +1,13 @@
+CREATE DATABASE IF NOT EXISTS EcoPalhoca
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_general_ci;
+ 
+USE EcoPalhoca;
+ 
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    senha_hash VARCHAR(255) NOT NULL,
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ultimo_acesso DATETIME DEFAULT NULL
+);
