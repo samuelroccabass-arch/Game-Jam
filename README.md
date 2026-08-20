@@ -132,64 +132,6 @@ Exemplo:
 🥉 Ecoponto Sul
 📏 2.8 km
 
-♻️ Materiais aceitos
-
-O sistema identifica os materiais disponíveis em cada ecoponto.
-
-Material
-
-Emoji
-
-Plástico
-
-🥤
-
-Vidro
-
-🍾
-
-Papel
-
-📦
-
-Metal
-
-🥫
-
-Roupas
-
-👕
-
-Pilhas/Baterias
-
-🔋
-
-Eletrônicos
-
-💻
-
-Óleo
-
-🛢️
-
-Entulho
-
-🧱
-
-Recicláveis gerais
-
-♻️
-
-🔎 Filtros
-
-O usuário pode filtrar os resultados por tipo de material.
-
-Todos
-🥤 Plástico
-🍾 Vidro
-📦 Papel
-🥫 Metal
-
 🗺️ Como chegar
 
 Cada ecoponto possui um botão que abre uma rota utilizando o Google Maps.
@@ -204,15 +146,6 @@ A aplicação possui suporte para:
 
 🌙 Tema escuro.
 
-📱 Interface responsiva
-
-A interface foi desenvolvida para funcionar em:
-
-💻 Computadores;
-
-📱 Celulares;
-
-📲 Tablets.
 
 🛠️ Tecnologias utilizadas
 
@@ -274,7 +207,6 @@ EcoMap-Brasil/
 │
 └── LICENSE
 
-No código atual, o HTML, CSS e JavaScript podem estar juntos no index.html. A separação em arquivos static é recomendada para organização futura.
 
 ⚙️ Instalação
 
