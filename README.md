@@ -275,7 +275,7 @@ pip install requests
 O Requests é utilizado para realizar as requisições às APIs externas.
 
 🗄️ 6. Instalar MySQL Connector
-
+7. bcrypt
 pip install mysql-connector-python
 
 O MySQL Connector permite que o Python se conecte ao banco de dados MySQL.
