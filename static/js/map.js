@@ -37,7 +37,7 @@ function usarGPS() {
     }
 
     const divLista = document.getElementById('listaPontos');
-    divLista.innerHTML = `<div class="empty-state"><div>📡</div><p>Obtendo sua localização atual...</p></div>`;
+    divLista.innerHTML = `<div class="empty-state"><div></div><p>Obtendo sua localização atual...</p></div>`;
 
     navigator.geolocation.getCurrentPosition(
         (posicao) => {
@@ -49,7 +49,7 @@ function usarGPS() {
         },
         (erro) => {
             alert("Não foi possível obter sua localização. Verifique as permissões do seu navegador.");
-            divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>Permissão de localização negada.</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>Permissão de localização negada.</p></div>`;
         }
     );
 }
@@ -76,7 +76,7 @@ function renderizarListaEPontos(pontos) {
         m.bindPopup(`
             <div style="font-family: 'Inter', sans-serif;">
                 <b style="color: #10b981;">#${numero} - ${ponto.nome}</b><br>
-                <small>📏 a ${distFormatada} de você</small><br><br>
+                <small> a ${distFormatada} de você</small><br><br>
                 <b>Materiais:</b><br>${tagsHtml}<br><br>
                 <button onclick="tracarRota(${ponto.lat}, ${ponto.lng})" style="width:100%; padding:6px; background:#3b82f6; color:white; border:none; border-radius:4px; font-weight:600; cursor:pointer;">🗺️ Traçar Rota</button>
             </div>
@@ -91,10 +91,10 @@ function renderizarListaEPontos(pontos) {
                 <span class="numero-badge">${numero}</span>
                 <h3>${ponto.nome}</h3>
             </div>
-            <div class="distancia-badge">📏 a ${distFormatada} de você</div>
+            <div class="distancia-badge"> a ${distFormatada} de você</div>
             <div class="cidade-texto">${ponto.cidade}</div>
             <div class="tags-container">${tagsHtml}</div>
-            <button class="btn-rota" onclick="event.stopPropagation(); tracarRota(${ponto.lat}, ${ponto.lng})">🗺️ Como Chegar</button>
+            <button class="btn-rota" onclick="event.stopPropagation(); tracarRota(${ponto.lat}, ${ponto.lng})"> Como Chegar</button>
         `;
 
         card.onclick = () => {

@@ -10,7 +10,7 @@ async function executarLogin() {
     }
 
     msg.className = 'modal-msg';
-    msg.innerText = 'Verificando...';
+    msg.innerText = 'Verificando';
 
     try {
         const response = await fetch('/login', {
@@ -27,7 +27,7 @@ async function executarLogin() {
         }
 
         usuarioLogado = dados.usuario.nome;
-        document.getElementById('btnAuth').innerText = `👤 ${usuarioLogado.split(' ')[0]}`;
+        document.getElementById('btnAuth').innerText = `${usuarioLogado.split(' ')[0]}`;
         
         const modal = document.getElementById('modalAuth');
         modal.classList.remove('forcar-login');
@@ -94,14 +94,14 @@ async function buscarPontosPorCoordenadas(lat, lng) {
     marcadores = [];
 
     const divLista = document.getElementById('listaPontos');
-    divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Carregando ecopontos...</p></div>`;
+    divLista.innerHTML = `<div class="empty-state"><div></div><p>Carregando ecopontos...</p></div>`;
 
     try {
         const res = await fetch(`/buscar?lat=${lat}&lng=${lng}`);
         const dados = await res.json();
 
         if (dados.erro) {
-            divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>${dados.erro}</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>${dados.erro}</p></div>`;
             return;
         }
 
@@ -111,11 +111,11 @@ async function buscarPontosPorCoordenadas(lat, lng) {
         mapa.setView([latUserAtual, lngUserAtual], 13);
 
         const userMarker = L.marker([latUserAtual, lngUserAtual]).addTo(mapa)
-            .bindPopup("<b>📍 Sua Localização Atual</b>").openPopup();
+            .bindPopup("<b>Sua Localização Atual</b>").openPopup();
         marcadores.push(userMarker);
 
         if (!dados.pontos || dados.pontos.length === 0) {
-            divLista.innerHTML = `<div class="empty-state"><div>📦</div><p>Nenhum ponto registrado nessa área.</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>Nenhum ponto registrado nessa área.</p></div>`;
             return;
         }
 
@@ -128,7 +128,7 @@ async function buscarPontosPorCoordenadas(lat, lng) {
 
     } catch (err) {
         console.error(err);
-        divLista.innerHTML = `<div class="empty-state"><div>❌</div><p>Erro de conexão com o servidor.</p></div>`;
+        divLista.innerHTML = `<div class="empty-state"><div></div><p>Erro de conexão com o servidor.</p></div>`;
     }
 }
 
@@ -147,14 +147,14 @@ async function buscarPontos() {
     marcadores = [];
 
     const divLista = document.getElementById('listaPontos');
-    divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Carregando ecopontos...</p></div>`;
+    divLista.innerHTML = `<div class="empty-state"><div></div><p>Carregando ecopontos...</p></div>`;
 
     try {
         const res = await fetch(`/buscar?endereco=${encodeURIComponent(endereco)}`);
         const dados = await res.json();
 
         if (dados.erro) {
-            divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>${dados.erro}</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>${dados.erro}</p></div>`;
             return;
         }
 
@@ -164,11 +164,11 @@ async function buscarPontos() {
         mapa.setView([latUserAtual, lngUserAtual], 12);
 
         const userMarker = L.marker([latUserAtual, lngUserAtual]).addTo(mapa)
-            .bindPopup("<b>📍 Ponto de Origem</b>").openPopup();
+            .bindPopup("<b>Ponto de Origem</b>").openPopup();
         marcadores.push(userMarker);
 
         if (!dados.pontos || dados.pontos.length === 0) {
-            divLista.innerHTML = `<div class="empty-state"><div>📦</div><p>Nenhum ponto registrado nessa área.</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>Nenhum ponto registrado nessa área.</p></div>`;
             return;
         }
 
@@ -181,7 +181,7 @@ async function buscarPontos() {
 
     } catch (err) {
         console.error(err);
-        divLista.innerHTML = `<div class="empty-state"><div>❌</div><p>Erro de conexão com o servidor.</p></div>`;
+        divLista.innerHTML = `<div class="empty-state"><div></div><p>Erro de conexão com o servidor.</p></div>`;
     }
 }async function buscarPontos() {
     if (!usuarioLogado) {
@@ -199,7 +199,7 @@ async function buscarPontos() {
     marcadores = [];
 
     const divLista = document.getElementById('listaPontos');
-    divLista.innerHTML = `<div class="empty-state"><div>⏳</div><p>Localizando "${endereco}"...</p></div>`;
+    divLista.innerHTML = `<div class="empty-state"><div></div><p>Localizando "${endereco}"...</p></div>`;
 
     try {
         // 2. Faz a requisição para o backend para buscar o endereço
@@ -207,7 +207,7 @@ async function buscarPontos() {
         const dados = await res.json();
 
         if (dados.erro) {
-            divLista.innerHTML = `<div class="empty-state"><div>⚠️</div><p>${dados.erro}</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>${dados.erro}</p></div>`;
             return;
         }
 
@@ -219,11 +219,11 @@ async function buscarPontos() {
         mapa.setView([latUserAtual, lngUserAtual], 12, { animate: false });
 
         const userMarker = L.marker([latUserAtual, lngUserAtual]).addTo(mapa)
-            .bindPopup(`<b>📍 Origem: ${endereco}</b>`).openPopup();
+            .bindPopup(`<b>Origem: ${endereco}</b>`).openPopup();
         marcadores.push(userMarker);
 
         if (!dados.pontos || dados.pontos.length === 0) {
-            divLista.innerHTML = `<div class="empty-state"><div>📦</div><p>Nenhum ponto encontrado em um raio de 15km nessa região.</p></div>`;
+            divLista.innerHTML = `<div class="empty-state"><div></div><p>Nenhum ponto encontrado em um raio de 15km nessa região.</p></div>`;
             return;
         }
 
@@ -237,6 +237,6 @@ async function buscarPontos() {
 
     } catch (err) {
         console.error(err);
-        divLista.innerHTML = `<div class="empty-state"><div>❌</div><p>Erro de conexão com o servidor.</p></div>`;
+        divLista.innerHTML = `<div class="empty-state"><div></div><p>Erro de conexão com o servidor.</p></div>`;
     }
 }

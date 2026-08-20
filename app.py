@@ -171,7 +171,7 @@ def buscar_locais():
                             "materiais": mat_lista
                         })
         except Exception as db_err:
-            print(f"⚠️ MySQL ausente ou não configurado: {db_err}")
+            print(f"MySQL ausente ou não configurado: {db_err}")
 
         # 4. Busca na API pública do Overpass
         pontos_api = buscar_api_gratuita(lat_user, lng_user)
